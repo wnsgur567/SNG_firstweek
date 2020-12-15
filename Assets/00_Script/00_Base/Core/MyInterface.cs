@@ -11,26 +11,26 @@ using UnityEngine;
 
 public interface IAwake
 {
-    public abstract void __Awake();
+    void __Awake();
 }
 public interface IStart
 {
-    public abstract void __Start();
+    void __Start();
 }
 public interface IOnEnable
 {
-    public abstract void __OnEnable();
+    void __OnEnable();
 }
 
 public interface IUpdate
 {
-    public abstract void __Update();
+    void __Update();
 }
 public interface ILateUpdate
 {
-    public abstract void __LateUpdate();
+    void __LateUpdate();
 }
 public interface IOnDisable
 {
-    public abstract void __OnDisable();
+    void __OnDisable();
 }

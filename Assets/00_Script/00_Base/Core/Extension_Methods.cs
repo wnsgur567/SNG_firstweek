@@ -59,10 +59,7 @@ public static class Methods
                     return temp_child_transforms;
                 }
             }
-
         }
-
         return null;
-    }
-    
+    }    
 }
