@@ -7,9 +7,9 @@ using UnityEditor;
 #endif
 
 // Prefab resource만 로드
-public class ResourcesManager : Singleton<ResourcesManager>
+public static class ResourcesManager
 {
-    static Dictionary<T1, GameObject> LoadPrefabs<T1>(string folderName) where T1 : Enum
+    public static Dictionary<T1, GameObject> LoadPrefabs<T1>(string folderName) where T1 : Enum
     {
         Dictionary<T1, GameObject> ret = new Dictionary<T1, GameObject>();
         GameObject[] prefabs = Resources.LoadAll<GameObject>(folderName);
@@ -25,7 +25,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         return ret;
     }
 
-    static Dictionary<T,AudioClip> LoadAudios<T>(string foldername) where T : Enum
+    public static Dictionary<T,AudioClip> LoadAudios<T>(string foldername) where T : Enum
     {
         Dictionary<T, AudioClip> ret = new Dictionary<T, AudioClip>();
         AudioClip[] clips = Resources.LoadAll<AudioClip>(foldername);

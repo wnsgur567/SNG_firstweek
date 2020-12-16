@@ -33,7 +33,7 @@ public class MemoryPool : MonoBehaviour, System.IDisposable
         poolSize = _poolSize;
         this.parent = parent;
 
-        for (int i = 0; i < (poolSize > preLoadedPoolSize ? preLoadedPoolSize : poolSize); i++)
+        for (int i = 0; i < poolSize; i++)
         {
             GameObject newItem = GameObject.Instantiate(original);  //new
             string[] strs = newItem.name.Split('(');
@@ -41,28 +41,18 @@ public class MemoryPool : MonoBehaviour, System.IDisposable
             newItem.SetActive(false);
             newItem.transform.SetParent(parent);
             queue.Enqueue(newItem);
-        }
-
-
-        if (poolSize > preLoadedPoolSize)
-        {
-            //StartCoroutine(MakePool());
         }
     }
 
-    IEnumerator MakePool()
+    // target 사이즈 이상이 될때까지 
+    // 매 동작시 make oneTime 만큼 풀 크기 확장
+    public IEnumerator ExpandPoolSizeAsync(int target_size, int make_oneTime,float waitTime = 0.1f)
     {
-        for (int i = preLoadedPoolSize; i < poolSize; ++i)
+        while (target_size >= poolSize)
         {
-            GameObject newItem = GameObject.Instantiate(original);  //new
-            string[] strs = newItem.name.Split('(');
-            newItem.name = strs[0];
-            newItem.SetActive(false);
-            newItem.transform.SetParent(parent);
-            queue.Enqueue(newItem);
+            ExpandPoolSize(make_oneTime);
+            yield return new WaitForSeconds(waitTime);
         }
-
-        yield return new WaitForSeconds(0.1f);
     }
 
     // foreach 문을 위한 반복자
@@ -70,6 +60,23 @@ public class MemoryPool : MonoBehaviour, System.IDisposable
     {
         foreach (GameObject item in queue)
             yield return item;
+    }
+
+    // 추가로 만들어 낼 사이즈 지정
+    void ExpandPoolSize(int makeSize)
+    {
+        int newSize = poolSize + makeSize;
+        for (int i = poolSize; i < newSize; i++)
+        {
+            GameObject newItem = GameObject.Instantiate(original);
+            string[] strs = newItem.name.Split('(');
+            newItem.name = strs[0];
+            newItem.SetActive(false);            
+            if (parent != null)
+                newItem.transform.SetParent(parent);
+            queue.Enqueue(newItem);
+        }
+        poolSize = newSize;
     }
 
     // 오브젝트 풀이 빌 경우 선택적으로 call
@@ -80,6 +87,8 @@ public class MemoryPool : MonoBehaviour, System.IDisposable
         for (int i = poolSize; i < newSize; i++)
         {
             GameObject newItem = GameObject.Instantiate(original);
+            string[] strs = newItem.name.Split('(');
+            newItem.name = strs[0];
             newItem.SetActive(false);
             if (parent != null)
                 newItem.transform.SetParent(parent);

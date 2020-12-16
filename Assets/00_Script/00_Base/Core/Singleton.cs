@@ -28,6 +28,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
+        this.transform.position = new Vector3(-1000, -1000, -1000);
         //DontDestroyOnLoad(gameObject);
     }
 }

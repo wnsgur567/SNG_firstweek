@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public static class Methods
@@ -62,4 +64,53 @@ public static class Methods
         }
         return null;
     }    
+
+    // enum 개수 만큼
+    public static Dictionary<T,MemoryPool> MakeMemoryPool<T>(Dictionary<T,GameObject> origin,GameObject _poolmanager ,int makeSize) where T : Enum
+    {
+        _ObjectStorage pm = _ObjectStorage.Instance;
+        Dictionary<T,MemoryPool> ret = new Dictionary<T, MemoryPool>();
+
+        // 종류별로 makeSize만큼 생성
+        foreach (var item in origin)
+        {
+            // 부모 오브젝트 생성
+            GameObject parent_obj = new GameObject();
+            // 부모 오브젝트 기본 setting
+            parent_obj.transform.parent = _poolmanager.transform;                   
+            parent_obj.name = item.Value.name + "_parent";
+
+            // 풀 생성 및 딕셔너리에 추가
+            MemoryPool itemPool = new MemoryPool(item.Value, makeSize, parent_obj.transform);
+            ret[item.Key] = itemPool;
+        }
+
+        return ret;
+    }
+}
+
+public static class String_Extension
+{
+    public static string[] mySplit(this string str, char seperator)
+    {
+        int length = str.Length;
+        int seperator_pos = -1;
+        for (int i = 0; i < length; i++)
+        {
+            if (str[i] == seperator)
+            {
+                seperator_pos = i;
+                break;
+            }
+        }
+
+        if (seperator_pos == -1)
+            return null;
+
+        string[] ret = new string[2];
+        ret[0] = str.Substring(0, seperator_pos);
+        ret[1] = str.Substring(seperator_pos + 1, length - seperator_pos - 1);
+
+        return ret;
+    }
 }
