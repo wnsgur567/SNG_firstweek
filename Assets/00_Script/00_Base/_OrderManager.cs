@@ -29,6 +29,9 @@ public class _OrderManager : MonoBehaviour
 
         foreach (var item in m_awake_list)
         {
+            if (item == null)
+                continue;
+
             var awake = item as IAwake;
             if (awake != null)
                 m_awakes.Add(awake);
@@ -37,6 +40,9 @@ public class _OrderManager : MonoBehaviour
         }
         foreach (var item in m_onEnable_list)
         {
+            if (item == null)
+                continue;
+
             var onEnable = item as IOnEnable;
             if (onEnable != null)
                 m_onEnables.Add(onEnable);
@@ -45,6 +51,9 @@ public class _OrderManager : MonoBehaviour
         }
         foreach (var item in m_start_list)
         {
+            if (item == null)
+                continue;
+
             var start = item as IStart;
             if (start != null)
                 m_starts.Add(start);
@@ -53,6 +62,9 @@ public class _OrderManager : MonoBehaviour
         }
         foreach (var item in m_onDisable_list)
         {
+            if (item == null)
+                continue;
+
             var onDisable = item as IOnDisable;
             if (onDisable != null)
                 m_onDisables.Add(onDisable);
@@ -61,6 +73,21 @@ public class _OrderManager : MonoBehaviour
         }
 
         Call_Awakes();
+    }
+
+    private void OnEnable()
+    {
+        Call_OnEnables();
+    }
+
+    private void Start()
+    {
+        Call_Start();
+    }
+
+    private void OnDisable()
+    {
+        Call_OnDisables();
     }
 
     private void Call_Awakes()

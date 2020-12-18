@@ -36,3 +36,12 @@ public enum E_BuildingType
 
 	Max,
 }
+
+public enum E_IvenNodeType
+{
+	None,
+
+	UserNode,
+
+	Max
+}

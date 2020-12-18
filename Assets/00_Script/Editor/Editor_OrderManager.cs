@@ -9,6 +9,8 @@ using UnityEditorInternal;
 [CustomEditor(typeof(_OrderManager))]
 public class Editor_OrderManager : Editor
 {
+    private SerializedProperty _property_myScript;
+
     private SerializedProperty _property_awake_list;
     private SerializedProperty _property_onEnable_list;
     private SerializedProperty _property_start_list;
@@ -21,12 +23,15 @@ public class Editor_OrderManager : Editor
 
     private void OnEnable()
     {
+        _property_myScript = serializedObject.FindProperty("_OrderManager");
+
         // load
         _property_awake_list = serializedObject.FindProperty("m_awake_list");
         _property_onEnable_list = serializedObject.FindProperty("m_onEnable_list");
         _property_start_list = serializedObject.FindProperty("m_start_list");
         _property_onDisable_list = serializedObject.FindProperty("m_onDisable_list");
 
+        
 
         // make list
         _awake_list = new ReorderableList(serializedObject, _property_awake_list, true, true, true, true)
@@ -53,8 +58,14 @@ public class Editor_OrderManager : Editor
 
     public override void OnInspectorGUI()
     {
-        //base.OnInspectorGUI();
+        //base.OnInspectorGUI();       
+
         serializedObject.Update();
+        EditorGUILayout.Space();
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((_OrderManager)target), typeof(_OrderManager), false);
+        EditorGUI.EndDisabledGroup();
+
         EditorGUILayout.Space();
         _awake_list.DoLayoutList();
         EditorGUILayout.Space();
