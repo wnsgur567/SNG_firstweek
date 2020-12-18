@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// json manager로 이관 필요
 public class _FileLoader : Singleton<_FileLoader>,IAwake
 {
     #region Infomation Data Table

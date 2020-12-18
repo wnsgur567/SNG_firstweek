@@ -87,6 +87,20 @@ public static class Methods
 
         return ret;
     }
+
+    public static string CombinePath(params string[] path)
+    {
+        string ret = "";
+        int Length = path.Length;
+
+        for (int i = 0; i < Length - 1; i++)
+        {
+            ret = ret + path[i] + '/';
+        }
+        ret = ret + path[Length - 1];
+
+        return ret;
+    }
 }
 
 public static class String_Extension
