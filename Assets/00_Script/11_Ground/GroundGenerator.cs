@@ -17,9 +17,7 @@ public class GroundGenerator : Singleton<GroundGenerator>, IAwake
         _groundInfoStorage = GroundInfoStorage.Instance;
 
         ground_pools = _ObjectStorage.Instance.ground_pools;        
-        ground_arr = Generate(_userInfoManager.userInfo.curGroundLevel);
-
-        
+        ground_arr = Generate(_userInfoManager.userInfo.curGroundLevel);        
     }
 
     // 아무것도 없는 상태에서 생성 (게임 로드 시)
@@ -37,6 +35,8 @@ public class GroundGenerator : Singleton<GroundGenerator>, IAwake
                 GroundInformation _info = _groundInfoStorage.groundInfo_arr[i, j];
                 ret[i, j] = ground_pools[_info.type].Spawn();
                 // 나머지 Init 할거 ...
+                ret[i,j].transform.position = _groundInfoStorage.IndexToPosition(i, j);
+                ret[i, j].SetActive(true);
             }
         }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class _OrderManager : Singleton<_OrderManager>
+public class _OrderManager : MonoBehaviour
 {
     [SerializeField]
     private List<MonoBehaviour> m_awake_list;
@@ -20,10 +20,8 @@ public class _OrderManager : Singleton<_OrderManager>
     private List<MonoBehaviour> m_onDisable_list;
     private List<IOnDisable> m_onDisables;
     
-    protected override void Awake()
-    {
-        base.Awake();
-
+    void Awake()
+    {  
         m_awakes = new List<IAwake>();
         m_onEnables = new List<IOnEnable>();
         m_starts = new List<IStart>();

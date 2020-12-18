@@ -30,11 +30,27 @@ public struct GroundSize
 {
     public int width;
     public int height;
-
     public GroundSize(int _width, int _height)
     {
         width = _width;
         height = _height;
+    }
+}
+public struct Index
+{
+    /*
+           x1  x2  x3
+        y1  .   .   .
+        y2  .   .   .
+        y3  .   .   .
+     */
+    public int x;
+    public int y;
+
+    public Index(int _x, int _y)
+    {
+        x = _x;
+        y = _y;
     }
 }
 
@@ -69,15 +85,18 @@ public class GroundInfoStorage : Singleton<GroundInfoStorage>, IAwake
 
     private void __InitDictionary()
     {
+        storage = new Dictionary<E_GroundType, GroundInformation>();
         // 임시 -> 파일
         for (int i = 0; i < (int)E_GroundType.Max; i++)
         {
+            storage[(E_GroundType)i] = new GroundInformation();
             storage[(E_GroundType)i].Clear();
             storage[(E_GroundType)i].__Init((E_GroundType)i, false);
         }
     }
     private void __InitLevelInfo()
     {
+        GroundSizes = new List<GroundSize>();
         // 임시 -> 파일
         GroundSizes.Add(new GroundSize());  // level 0
 
@@ -93,9 +112,35 @@ public class GroundInfoStorage : Singleton<GroundInfoStorage>, IAwake
     private void __InitGroundArrInfo()
     {
         groundInfo_arr = new GroundInformation[MAXGROUNDSIZE, MAXGROUNDSIZE];
-        
+
         // 파일 읽어서 정보 있으면 셋팅
         // ...
         // ...
+    }
+
+    // left top
+    public Vector3 IndexToPosition(int _indexX, int _indexY)
+    {
+        Vector3 ret;
+
+        Index center = GetCenterIndex();
+
+        int deltaX = center.x - _indexX;
+        int deltaY = center.y - _indexY;
+
+        ret = new Vector3(deltaX, 0, deltaY);
+
+        return ret;
+    }
+
+    public Index GetCenterIndex()
+    {
+        Index ret;
+
+        int x = MAXGROUNDSIZE / 2;
+        int y = MAXGROUNDSIZE / 2;
+        ret = new Index(x, y);
+
+        return ret;
     }
 }

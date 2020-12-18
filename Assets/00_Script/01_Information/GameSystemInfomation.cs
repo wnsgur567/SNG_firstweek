@@ -21,8 +21,13 @@ public struct Option_Sound
 }
 
 
-public class GameSystemInfomation : MonoBehaviour
+public class GameSystemInfomation : Singleton<GameSystemInfomation>, IAwake
 {
     public Option_Graphic option_graphic;
     public Option_Sound option_sound;
+
+    public void __Awake()
+    {
+        
+    }
 }

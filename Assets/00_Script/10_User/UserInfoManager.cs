@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public struct UserInfo
 {
     public int level;       // 현재 레벨
@@ -25,7 +24,7 @@ public struct UserInfo
         stamina = 0;
         gold = 0;
         cash = 0;
-        curGroundLevel = 0;        
+        curGroundLevel = 0;
 
         ClearMaterials();
     }
@@ -35,7 +34,7 @@ public struct UserInfo
         for (int i = 0; i < (int)E_MaterialType.Max; i++)
         {
             materials[(E_MaterialType)i] = 0;
-        }        
+        }
     }
 }
 
