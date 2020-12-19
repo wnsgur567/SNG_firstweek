@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // 최종 수정 09-26
-public class MemoryPool : MonoBehaviour, System.IDisposable
+public class MemoryPool : System.IDisposable
 {
     private Queue<GameObject> queue = new Queue<GameObject>();      // 생성한 오브젝트들을 담을 실제 풀
     private GameObject original;        // 풀에 담을 원본

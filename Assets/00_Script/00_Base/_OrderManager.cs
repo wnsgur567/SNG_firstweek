@@ -5,20 +5,20 @@ using UnityEngine;
 public class _OrderManager : MonoBehaviour
 {
     [SerializeField]
-    private List<MonoBehaviour> m_awake_list;
-    private List<IAwake> m_awakes;
+    private List<MonoBehaviour> m_awake_list = null;
+    private List<IAwake> m_awakes = null;
 
     [SerializeField] 
-    private List<MonoBehaviour> m_onEnable_list;
-    private List<IOnEnable> m_onEnables;
+    private List<MonoBehaviour> m_onEnable_list = null;
+    private List<IOnEnable> m_onEnables = null;
 
     [SerializeField] 
-    private List<MonoBehaviour> m_start_list;
-    private List<IStart> m_starts;
+    private List<MonoBehaviour> m_start_list = null;
+    private List<IStart> m_starts = null;
 
     [SerializeField] 
-    private List<MonoBehaviour> m_onDisable_list;
-    private List<IOnDisable> m_onDisables;
+    private List<MonoBehaviour> m_onDisable_list = null;
+    private List<IOnDisable> m_onDisables = null;
     
     void Awake()
     {  

@@ -13,15 +13,15 @@ public class Serialization<T>
 public static class JsonManager 
 {    
     // Persitent 기준으로 Path 생성 및 반환
-    public static string GetDirectoryPath(string p_directoryPath)
+    public static string GetPersistentPath(string p_directoryPath)
     {
-        string m_persistentPath;
-        string m_resultPath;        // persistent + directory + filename         
+        string persistentPath;
+        string resultPath;        // persistent + directory + filename         
 
-        m_persistentPath = Application.persistentDataPath;        
-        m_resultPath = Methods.CombinePath(m_persistentPath, p_directoryPath);        
+        persistentPath = Application.persistentDataPath;
+        resultPath = Methods.CombinePath(persistentPath, p_directoryPath);        
 
-        return m_resultPath;
+        return resultPath;
     }
     public static string GetFilePath(string p_directoryPath, string p_filename)
     {

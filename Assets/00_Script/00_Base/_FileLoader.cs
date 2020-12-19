@@ -50,5 +50,6 @@ public class _FileLoader : Singleton<_FileLoader>,IAwake
         //loaded_buildingInfo = FileManager.File_Load(filepath_buildingsInfo);
         //loaded_plantInfo = FileManager.File_Load(filepath_plantsInfo);
         //loaded_animalsInfo = FileManager.File_Load(filepath_animalsInfo);
+        
     }    
 }

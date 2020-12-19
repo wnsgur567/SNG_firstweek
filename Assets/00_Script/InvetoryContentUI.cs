@@ -35,7 +35,7 @@ public class InvetoryContentUI : MonoBehaviour
             GameObject _node = nodePool.Spawn();
 
             // init
-            _node.transform.SetParent(this.gameObject.transform);
+            _node.transform.SetParent(this.gameObject.transform, false);
             _node.SetActive(true);
             actived_nodes.Add(_node);
         }
