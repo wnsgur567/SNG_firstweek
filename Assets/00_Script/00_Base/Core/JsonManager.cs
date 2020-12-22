@@ -10,6 +10,38 @@ public class Serialization<T>
     public Serialization(List<T> _target) => target = _target;
 }
 
+[System.Serializable]
+public class Serialization<TKey, TValue> : ISerializationCallbackReceiver
+{
+    [SerializeField]
+    List<TKey> keys;
+    [SerializeField]
+    List<TValue> values;
+
+    public Dictionary<TKey, TValue> target;
+    public Serialization(Dictionary<TKey, TValue> _target) => target = _target;
+
+    public void OnBeforeSerialize()
+    {   // 직렬화 전
+        keys = new List<TKey>();
+        values = new List<TValue>();
+        foreach (var item in target)
+        {
+            keys.Add(item.Key);
+            values.Add(item.Value);
+        }
+    }
+    public void OnAfterDeserialize()
+    {   // 역직렬화 후
+        var count = Mathf.Min(keys.Count, values.Count);
+        target = new Dictionary<TKey, TValue>(count);
+        for (var i = 0; i < count; i++)
+        {
+            target.Add(keys[i], values[i]);
+        }
+    }
+}
+
 public static class JsonManager 
 {    
     // Persitent 기준으로 Path 생성 및 반환
@@ -64,23 +96,30 @@ public static class JsonManager
 
     // List를 직렬화 시켜 Json으로 저장
     public static void Save<T>(string p_filepath, List<T> p_listData)
-    {
-        List<T> serialized = new Serialization<T>(p_listData).target;
-        string jsonData = JsonUtility.ToJson(serialized, true);
+    {        
+        string jsonData = JsonUtility.ToJson(new Serialization<T>(p_listData), true);
         File.WriteAllText(p_filepath, jsonData);
     }
 
+    public static void Save<TKey,TValue>(string p_filepath,Dictionary<TKey,TValue> p_DicData)
+    {
+        string jsonData = JsonUtility.ToJson(new Serialization<TKey, TValue>(p_DicData));
+        File.WriteAllText(p_filepath, jsonData);
+    }
     
     public static void Load<T>(string p_filepath, out T __outData)
     {
         string jsonData = File.ReadAllText(p_filepath);
         __outData = JsonUtility.FromJson<T>(jsonData);
-    }
-
-    
+    }    
     public static void Load<T>(string p_filepath,out List<T> __outListData)
     {
         string jsonData = File.ReadAllText(p_filepath);
         __outListData = JsonUtility.FromJson<Serialization<T>>(jsonData).target;
+    }
+    public static void Load<Tkey,TValue>(string p_filepath,out Dictionary<Tkey, TValue> __outDicData)
+    {
+        string jsonData = File.ReadAllText(p_filepath);
+        __outDicData = JsonUtility.FromJson<Serialization<Tkey, TValue>>(jsonData).target;
     }
 }
