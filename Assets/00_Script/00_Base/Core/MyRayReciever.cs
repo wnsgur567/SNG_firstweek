@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class MyRayReciever : MonoBehaviour
 {
+    public bool On;   
+
+    private void Awake()
+    {
+        On = false;        
+    }
+
     private enum E_ColliderType
     {
         None = 0,
@@ -50,6 +57,7 @@ public class MyRayReciever : MonoBehaviour
                 BoxCollider _c1 = this.gameObject.AddComponent<BoxCollider>();
                 _c1.isTrigger = IsTrigger;
                 _c1.size = m_boxSize;
+                
                 break;
             case E_ColliderType.Sphere:
                 SphereCollider _c2 = this.gameObject.AddComponent<SphereCollider>();
@@ -62,8 +70,8 @@ public class MyRayReciever : MonoBehaviour
                 _c3.height = m_capsuleSize.height;
                 _c3.isTrigger = IsTrigger;
                 break;            
-        }
-        
+        }        
     }
+   
 #endif
 }

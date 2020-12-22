@@ -11,6 +11,48 @@ public class Serialization<T>
 }
 
 [System.Serializable]
+public class Serialization_1DArray<T>
+{
+    public T[] array;
+    public Serialization_1DArray(T[] _array) => array = _array;
+}
+
+// 콜백 인터페이스는 클래스에서만 작동합니다. 구조체에서는 작동하지 않습니다.
+[System.Serializable]
+public class Serialization_2DArray<T> : ISerializationCallbackReceiver
+{
+    [SerializeField]
+    Serialization_1DArray<T>[] arrayList;
+
+    public T[][] array;
+
+    public Serialization_2DArray(T[][] _array)
+    {
+        array = _array;
+    }
+
+    public void OnBeforeSerialize()
+    {
+        int length = array.Length;
+        arrayList = new Serialization_1DArray<T>[length];
+        for (int i = 0; i < length; i++)
+        {
+            arrayList[i] = new Serialization_1DArray<T>(array[i]);
+        }
+    }
+
+    public void OnAfterDeserialize()
+    {
+        int length = arrayList.Length;
+        array = new T[length][];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = arrayList[i].array;
+        }
+    }
+}
+
+[System.Serializable]
 public class Serialization<TKey, TValue> : ISerializationCallbackReceiver
 {
     [SerializeField]
@@ -87,6 +129,9 @@ public static class JsonManager
         }        
     }
 
+
+    /// Save
+
     // 기본 데이터 형식 or Serializable class 를 Json으로 저장
     public static void Save<T>(string p_filepath, T p_data)
     {
@@ -101,12 +146,28 @@ public static class JsonManager
         File.WriteAllText(p_filepath, jsonData);
     }
 
-    public static void Save<TKey,TValue>(string p_filepath,Dictionary<TKey,TValue> p_DicData)
+    //public static void Save<TKey,TValue>(string p_filepath,Dictionary<TKey,TValue> p_DicData)
+    //{
+    //    string jsonData = JsonUtility.ToJson(new Serialization<TKey, TValue>(p_DicData));
+    //    File.WriteAllText(p_filepath, jsonData);
+    //}
+    public static void Save<T>(string p_filepath, T[] p_array1D)
     {
-        string jsonData = JsonUtility.ToJson(new Serialization<TKey, TValue>(p_DicData));
+        string jsonData = JsonUtility.ToJson(new Serialization_1DArray<T>(p_array1D), true);
+        Debug.Log(jsonData);
         File.WriteAllText(p_filepath, jsonData);
     }
+    //public static void Save<T>(string p_filepath, T[][] p_array2D)
+    //{
+    //    string jsonData = JsonUtility.ToJson(new Serialization_2DArray<T>(p_array2D), true);
+    //    Debug.Log(jsonData);
+    //    File.WriteAllText(p_filepath, jsonData);
+    //}
+
     
+    /// Load   
+    
+
     public static void Load<T>(string p_filepath, out T __outData)
     {
         string jsonData = File.ReadAllText(p_filepath);
@@ -117,9 +178,19 @@ public static class JsonManager
         string jsonData = File.ReadAllText(p_filepath);
         __outListData = JsonUtility.FromJson<Serialization<T>>(jsonData).target;
     }
-    public static void Load<Tkey,TValue>(string p_filepath,out Dictionary<Tkey, TValue> __outDicData)
+    //public static void Load<Tkey,TValue>(string p_filepath,out Dictionary<Tkey, TValue> __outDicData)
+    //{
+    //    string jsonData = File.ReadAllText(p_filepath);
+    //    __outDicData = JsonUtility.FromJson<Serialization<Tkey, TValue>>(jsonData).target;
+    //}
+    public static void Load<T>(string p_filepath, out T[] __outArrayData)
     {
         string jsonData = File.ReadAllText(p_filepath);
-        __outDicData = JsonUtility.FromJson<Serialization<Tkey, TValue>>(jsonData).target;
+        __outArrayData = JsonUtility.FromJson<Serialization_1DArray<T>>(jsonData).array;
     }
+    //public static void Load<T>(string p_filepath, out T[][] __outArrayData)
+    //{
+    //    string jsonData = File.ReadAllText(p_filepath);
+    //    __outArrayData = JsonUtility.FromJson<Serialization_2DArray<T>>(jsonData).array;
+    //}
 }

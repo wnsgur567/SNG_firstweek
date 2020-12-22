@@ -28,13 +28,13 @@ public enum E_MaterialType
 public enum E_BuildingType
 {
 	None = 0,
+	Building_1 = 1,
+	Building_2 = 2,
+	Building_3 = 3,
+	Building_4 = 4,
+	Building_5 = 5,
 
-	b1,
-	b2,
-	b3,
-	b4,
-
-	Max,
+	Max
 }
 
 public enum E_IvenNodeType

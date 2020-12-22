@@ -32,8 +32,8 @@ public class GroundGenerator : Singleton<GroundGenerator>, IAwake
         {
             for (int j = 0; j < _max; j++)
             {
-                GroundInformation _info = _groundInfoStorage.groundInfo_arr[i, j];
-                ret[i, j] = ground_pools[_info.type].Spawn();
+                int _info = _groundInfoStorage.m_settingInformation.GroundSettingInfo[i][j];
+                ret[i, j] = ground_pools[(E_GroundType)_info].Spawn();
                 // 나머지 Init 할거 ...
                 ret[i,j].transform.position = _groundInfoStorage.IndexToPosition(i, j);
                 ret[i, j].SetActive(true);

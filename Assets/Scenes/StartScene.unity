@@ -1264,8 +1264,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1523641137}
-  - component: {fileID: 1523641136}
   - component: {fileID: 1523641138}
+  - component: {fileID: 1523641136}
   m_Layer: 0
   m_Name: _JsonInfoLoader
   m_TagString: Untagged
@@ -1285,23 +1285,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e924b37b31e0a847ab12e995eadef02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_path_list:
-  - directoryPath: 
-    filePath: 
-  - directoryPath: 
-    filePath: 
-  - directoryPath: 
-    filePath: 
-  m_userInfo:
-  - level: 0
-    curExp: 0
-    maxExp: 0
-    stamina: 0
-    gold: 0
-    cash: 0
-    curGroundLevel: 0
+  m_path_list: []
+  m_userInfo: []
   m_buildInfomation: []
   m_groundInformation: []
+  m_groundSettingInfo:
+    total_width: 0
+    total_height: 0
+    current_width: 0
+    current_height: 0
+    serilization_array:
+      arrayList: []
 --- !u!4 &1523641137
 Transform:
   m_ObjectHideFlags: 0
@@ -1951,6 +1945,14 @@ MonoBehaviour:
   MAXGROUNDSIZE: 100
   STDSIZE: 10
   MAXGROUNDLEVEL: 10
+  GroundSizes: []
+  m_settingInformation:
+    total_width: 0
+    total_height: 0
+    current_width: 0
+    current_height: 0
+    serilization_array:
+      arrayList: []
 --- !u!1 &1720593785
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,7 +2053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_awake_list:
-  - {fileID: 1720593786}
+  - {fileID: 0}
   - {fileID: 582218170}
   - {fileID: 165058672}
   - {fileID: 1174098261}
