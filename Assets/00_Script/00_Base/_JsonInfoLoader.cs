@@ -112,6 +112,18 @@ public class _JsonInfoLoader : Singleton<_JsonInfoLoader>, IAwake
         JsonManager.Save(m_persistentPath_list[1].filePath, m_buildInfomation);
         JsonManager.Save(m_persistentPath_list[2].filePath, m_groundInformation);
 
+        
+        // 임시 세팅값
+        m_groundSettingInfo.__Init(5, 5, 3, 3);
+
+        for (int i = 0; i < m_groundSettingInfo.total_height; i++)
+        {
+            for (int j = 0; j < m_groundSettingInfo.total_width; j++)
+            {
+                m_groundSettingInfo.GroundSettingInfo[i][j] = 1;
+            }
+        }
+        
         JsonManager.Save(m_persistentPath_list[3].filePath, m_groundSettingInfo);
 
         return;

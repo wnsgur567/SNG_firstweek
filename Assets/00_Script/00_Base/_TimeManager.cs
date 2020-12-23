@@ -39,6 +39,8 @@ public class _TimeManager : MonoBehaviour
         }
     }
 
+    // 이게 맞나?
+    // yield 2회
     IEnumerator WebChk()
     {         
         while (isChecking)

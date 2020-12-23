@@ -56,47 +56,6 @@ public struct Index
     }
 }
 
-//[System.Serializable]
-//public struct MapSettingInformation_struct 
-//{
-//    public int total_width;
-//    public int total_height;
-//    public int current_width;
-//    public int current_height;
-
-//    public int[][] GroundSettingInfo;
-//    [SerializeField]
-//    private Serialization_2DArray<int> serilization_array;
-
-//    public void OnAfterDeserialize()
-//    {
-//        throw new System.NotImplementedException();
-//    }
-
-//    public void OnBeforeSerialize()
-//    {
-//        throw new System.NotImplementedException();
-//    }
-
-//    //public void OnBeforeSerialize()
-//    //{
-//    //    GroundSettingInfo = new int[total_height][];
-//    //    for (int i = 0; i < total_height; i++)
-//    //    {
-//    //        GroundSettingInfo[i] = new int[total_width];
-//    //    }
-//    //    serilization_array = new Serialization_2DArray<int>(GroundSettingInfo);
-//    //    ((ISerializationCallbackReceiver)serilization_array).OnBeforeSerialize();
-//    //}
-
-//    public void __Init(int _total_width, int _total_height, int _current_width, int _current_height)
-//    {
-//        total_width = _total_width;
-//        total_height = _total_height;
-//        current_width = _current_width;
-//        current_height = _current_height;       
-//    }
-//}
 
 [System.Serializable]
 public class MapSettingInformation : ISerializationCallbackReceiver
@@ -112,7 +71,7 @@ public class MapSettingInformation : ISerializationCallbackReceiver
 
     public MapSettingInformation()
     {
-        serilization_array = new Serialization_2DArray<int>(GroundSettingInfo);
+                
     }
 
     public void OnAfterDeserialize()
@@ -123,11 +82,7 @@ public class MapSettingInformation : ISerializationCallbackReceiver
 
     public void OnBeforeSerialize()
     {
-        GroundSettingInfo = new int[total_height][];
-        for (int i = 0; i < total_height; i++)
-        {
-            GroundSettingInfo[i] = new int[total_width];
-        }
+        serilization_array = new Serialization_2DArray<int>(GroundSettingInfo);
         ((ISerializationCallbackReceiver)serilization_array).OnBeforeSerialize();
     }
 
@@ -137,6 +92,11 @@ public class MapSettingInformation : ISerializationCallbackReceiver
         total_height = _total_height;
         current_width = _current_width;
         current_height = _current_height;
+        GroundSettingInfo = new int[total_height][];
+        for (int i = 0; i < total_height; i++)
+        {
+            GroundSettingInfo[i] = new int[total_width];
+        }
     }
 }
 
