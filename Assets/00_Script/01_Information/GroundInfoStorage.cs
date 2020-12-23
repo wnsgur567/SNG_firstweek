@@ -56,8 +56,50 @@ public struct Index
     }
 }
 
+//[System.Serializable]
+//public struct MapSettingInformation_struct 
+//{
+//    public int total_width;
+//    public int total_height;
+//    public int current_width;
+//    public int current_height;
+
+//    public int[][] GroundSettingInfo;
+//    [SerializeField]
+//    private Serialization_2DArray<int> serilization_array;
+
+//    public void OnAfterDeserialize()
+//    {
+//        throw new System.NotImplementedException();
+//    }
+
+//    public void OnBeforeSerialize()
+//    {
+//        throw new System.NotImplementedException();
+//    }
+
+//    //public void OnBeforeSerialize()
+//    //{
+//    //    GroundSettingInfo = new int[total_height][];
+//    //    for (int i = 0; i < total_height; i++)
+//    //    {
+//    //        GroundSettingInfo[i] = new int[total_width];
+//    //    }
+//    //    serilization_array = new Serialization_2DArray<int>(GroundSettingInfo);
+//    //    ((ISerializationCallbackReceiver)serilization_array).OnBeforeSerialize();
+//    //}
+
+//    public void __Init(int _total_width, int _total_height, int _current_width, int _current_height)
+//    {
+//        total_width = _total_width;
+//        total_height = _total_height;
+//        current_width = _current_width;
+//        current_height = _current_height;       
+//    }
+//}
+
 [System.Serializable]
-public struct MapSettingInformation
+public class MapSettingInformation : ISerializationCallbackReceiver
 {
     public int total_width;
     public int total_height;
@@ -67,34 +109,50 @@ public struct MapSettingInformation
     public int[][] GroundSettingInfo;
     [SerializeField]
     private Serialization_2DArray<int> serilization_array;
-       
-    //public void OnBeforeSerialize()
-    //{
-    //    GroundSettingInfo = new int[total_height][];
-    //    for (int i = 0; i < total_height; i++)
-    //    {
-    //        GroundSettingInfo[i] = new int[total_width];
-    //    }
-    //    serilization_array = new Serialization_2DArray<int>(GroundSettingInfo);
-    //    ((ISerializationCallbackReceiver)serilization_array).OnBeforeSerialize();
-    //}
+
+    public MapSettingInformation()
+    {
+        serilization_array = new Serialization_2DArray<int>(GroundSettingInfo);
+    }
+
+    public void OnAfterDeserialize()
+    {
+        ((ISerializationCallbackReceiver)serilization_array).OnAfterDeserialize();
+        GroundSettingInfo = serilization_array.array;
+    }
+
+    public void OnBeforeSerialize()
+    {
+        GroundSettingInfo = new int[total_height][];
+        for (int i = 0; i < total_height; i++)
+        {
+            GroundSettingInfo[i] = new int[total_width];
+        }
+        ((ISerializationCallbackReceiver)serilization_array).OnBeforeSerialize();
+    }
 
     public void __Init(int _total_width, int _total_height, int _current_width, int _current_height)
     {
         total_width = _total_width;
         total_height = _total_height;
         current_width = _current_width;
-        current_height = _current_height;       
+        current_height = _current_height;
     }
 }
 
 public class GroundInfoStorage : Singleton<GroundInfoStorage>, IAwake
 {
-    [Tooltip("width & height MAX value"), Range(0, 200)]
+
+    // TODO : ConstantsField 로 나중에 따로 빼내기
+
+    //[Tooltip("width & height MAX value"), Range(0, 200)]
+    [HideInInspector]
     public int MAXGROUNDSIZE;
-    [Tooltip("레벨 1 기준으로 기본 제공되는 Ground 사이즈"), Range(10, 100)]
+    //[Tooltip("레벨 1 기준으로 기본 제공되는 Ground 사이즈"), Range(10, 100)]
+    [HideInInspector]
     public int STDSIZE;
-    [Range(0, 100)]
+    //[Range(0, 100)]
+    [HideInInspector]
     public int MAXGROUNDLEVEL;
 
 
@@ -109,9 +167,16 @@ public class GroundInfoStorage : Singleton<GroundInfoStorage>, IAwake
     [HideInInspector]
     public MapSettingInformation m_settingInformation;
 
+    _JsonInfoLoader _loader = null;
 
     public void __Awake()
     {
+        _loader = _JsonInfoLoader.Instance;
+        var _setting_info = _loader.m_groundSettingInfo;
+        MAXGROUNDSIZE = _setting_info.total_height;     // 좌우 동일한 사이즈로 확장된다고 가정
+        STDSIZE = _setting_info.current_height;         // 좌우 동일한 사이즈로 확장된다고 가정
+        MAXGROUNDLEVEL = 100;  // 임시값
+
         __InitDictionary();
         __InitLevelInfo();
         __InitGroundArrInfo();
@@ -131,11 +196,11 @@ public class GroundInfoStorage : Singleton<GroundInfoStorage>, IAwake
     private void __InitLevelInfo()
     {
         GroundSizes = new List<GroundSize>();
-        // 임시 -> 파일
-        GroundSizes.Add(new GroundSize());  // level 0
+        // 임시 -> json 파일
+        GroundSizes.Add(new GroundSize());  // level 0        
 
         // level 1 ~ ...
-        for (int i = 1; i < MAXGROUNDLEVEL + 1; i++)
+        for (int i = 1; i < MAXGROUNDSIZE + 1; i++)
         {
             GroundSizes.Add(new GroundSize
                 (STDSIZE + (i - 1) * 2,
@@ -144,10 +209,9 @@ public class GroundInfoStorage : Singleton<GroundInfoStorage>, IAwake
     }
 
     private void __InitGroundArrInfo()
-    {       
-        // 파일에서 읽어온 정보를 복사
-        _JsonInfoLoader _loader = _JsonInfoLoader.Instance;
-        m_settingInformation = _loader.m_groundSettingInfo;        
+    {
+        // 파일에서 읽어온 정보를 복사        
+        m_settingInformation = _loader.m_groundSettingInfo;
     }
 
     // left top

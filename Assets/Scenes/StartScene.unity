@@ -1285,7 +1285,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e924b37b31e0a847ab12e995eadef02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_path_list: []
+  m_path_list:
+  - directoryPath: User
+    filePath: UserInfo.json
+  - directoryPath: Building
+    filePath: BuildingInfo.json
+  - directoryPath: Ground
+    filePath: GroundInfo.json
+  - directoryPath: Ground
+    filePath: GroundSetting.json
   m_userInfo: []
   m_buildInfomation: []
   m_groundInformation: []

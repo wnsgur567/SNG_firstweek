@@ -53,7 +53,7 @@ public class Serialization_2DArray<T> : ISerializationCallbackReceiver
 }
 
 [System.Serializable]
-public class Serialization<TKey, TValue> : ISerializationCallbackReceiver
+public class Serialization<TKey, TValue> : ISerializationCallbackReceiver where TKey: System.Enum
 {
     [SerializeField]
     List<TKey> keys;
@@ -146,27 +146,27 @@ public static class JsonManager
         File.WriteAllText(p_filepath, jsonData);
     }
 
-    //public static void Save<TKey,TValue>(string p_filepath,Dictionary<TKey,TValue> p_DicData)
-    //{
-    //    string jsonData = JsonUtility.ToJson(new Serialization<TKey, TValue>(p_DicData));
-    //    File.WriteAllText(p_filepath, jsonData);
-    //}
+    public static void Save<TKey, TValue>(string p_filepath, Dictionary<TKey, TValue> p_DicData) where TKey : System.Enum
+    {
+        string jsonData = JsonUtility.ToJson(new Serialization<TKey, TValue>(p_DicData));
+        File.WriteAllText(p_filepath, jsonData);
+    }
     public static void Save<T>(string p_filepath, T[] p_array1D)
     {
         string jsonData = JsonUtility.ToJson(new Serialization_1DArray<T>(p_array1D), true);
         Debug.Log(jsonData);
         File.WriteAllText(p_filepath, jsonData);
     }
-    //public static void Save<T>(string p_filepath, T[][] p_array2D)
-    //{
-    //    string jsonData = JsonUtility.ToJson(new Serialization_2DArray<T>(p_array2D), true);
-    //    Debug.Log(jsonData);
-    //    File.WriteAllText(p_filepath, jsonData);
-    //}
+    public static void Save<T>(string p_filepath, T[][] p_array2D)
+    {
+        string jsonData = JsonUtility.ToJson(new Serialization_2DArray<T>(p_array2D), true);
+        Debug.Log(jsonData);
+        File.WriteAllText(p_filepath, jsonData);
+    }
 
-    
+
     /// Load   
-    
+
 
     public static void Load<T>(string p_filepath, out T __outData)
     {
@@ -178,19 +178,19 @@ public static class JsonManager
         string jsonData = File.ReadAllText(p_filepath);
         __outListData = JsonUtility.FromJson<Serialization<T>>(jsonData).target;
     }
-    //public static void Load<Tkey,TValue>(string p_filepath,out Dictionary<Tkey, TValue> __outDicData)
-    //{
-    //    string jsonData = File.ReadAllText(p_filepath);
-    //    __outDicData = JsonUtility.FromJson<Serialization<Tkey, TValue>>(jsonData).target;
-    //}
+    public static void Load<TKey, TValue>(string p_filepath, out Dictionary<TKey, TValue> __outDicData) where TKey : System.Enum
+    {
+        string jsonData = File.ReadAllText(p_filepath);
+        __outDicData = JsonUtility.FromJson<Serialization<TKey, TValue>>(jsonData).target;
+    }
     public static void Load<T>(string p_filepath, out T[] __outArrayData)
     {
         string jsonData = File.ReadAllText(p_filepath);
         __outArrayData = JsonUtility.FromJson<Serialization_1DArray<T>>(jsonData).array;
     }
-    //public static void Load<T>(string p_filepath, out T[][] __outArrayData)
-    //{
-    //    string jsonData = File.ReadAllText(p_filepath);
-    //    __outArrayData = JsonUtility.FromJson<Serialization_2DArray<T>>(jsonData).array;
-    //}
+    public static void Load<T>(string p_filepath, out T[][] __outArrayData)
+    {
+        string jsonData = File.ReadAllText(p_filepath);
+        __outArrayData = JsonUtility.FromJson<Serialization_2DArray<T>>(jsonData).array;
+    }
 }
