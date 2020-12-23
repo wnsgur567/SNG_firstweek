@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class _OrderManager : MonoBehaviour
+public class _OrderManager : MonoBehaviour, IAwake, IOnEnable, IStart, IOnDisable
 {
     [SerializeField]
     private List<MonoBehaviour> m_awake_list = null;
     private List<IAwake> m_awakes = null;
 
-    [SerializeField] 
+    [SerializeField]
     private List<MonoBehaviour> m_onEnable_list = null;
     private List<IOnEnable> m_onEnables = null;
 
-    [SerializeField] 
+    [SerializeField]
     private List<MonoBehaviour> m_start_list = null;
     private List<IStart> m_starts = null;
 
-    [SerializeField] 
+    [SerializeField]
     private List<MonoBehaviour> m_onDisable_list = null;
     private List<IOnDisable> m_onDisables = null;
-    
-    void Awake()
-    {  
+
+    public void __Awake()
+    {
         m_awakes = new List<IAwake>();
         m_onEnables = new List<IOnEnable>();
         m_starts = new List<IStart>();
@@ -75,21 +75,18 @@ public class _OrderManager : MonoBehaviour
         Call_Awakes();
     }
 
-    private void OnEnable()
+    public void __OnEnable()
     {
         Call_OnEnables();
     }
-
-    private void Start()
+    public void __Start()
     {
         Call_Start();
     }
-
-    private void OnDisable()
+    public void __OnDisable()
     {
         Call_OnDisables();
     }
-
     private void Call_Awakes()
     {
         foreach (var item in m_awakes)
@@ -117,5 +114,12 @@ public class _OrderManager : MonoBehaviour
         {
             item.__OnDisable();
         }
-    }    
+    }
+
 }
+
+
+
+
+
+

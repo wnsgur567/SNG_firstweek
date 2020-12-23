@@ -22,8 +22,7 @@ public class InvetoryContentUI : MonoBehaviour
     }
 
     private void Start()
-    {       
-        
+    {             
 
         OnUserInvenNodeUpdate(inven.m_curSize);
     }

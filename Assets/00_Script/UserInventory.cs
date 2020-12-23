@@ -13,7 +13,7 @@ public class UserInventory : Inventory
 
     public void MakeInvenNode()
     {
-        for (int i = 0; i < m_totalSize + 30; i++)
+        for (int i = 0; i < m_totalSize; i++)
         {
             InvenNode _node = new InvenNode();
 
