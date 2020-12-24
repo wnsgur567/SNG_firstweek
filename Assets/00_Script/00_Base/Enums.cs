@@ -37,6 +37,19 @@ public enum E_BuildingType
 	Max
 }
 
+public enum E_PlantType
+{
+	None = 0,
+
+	Plant_1 = 1,
+	Plant_2 = 1,
+	Plant_3 = 1,
+	Plant_4 = 1,
+	Plant_5 = 1,
+
+	Max
+}
+
 public enum E_IvenNodeType
 {
 	None,

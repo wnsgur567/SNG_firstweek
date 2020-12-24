@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// 현재 플레이어에 대한 정보
 [System.Serializable]
-public struct UserInfo
+public struct UserInfo_Current
 {
     public int level;       // 현재 레벨
     public int curExp;      // 현재 exp
@@ -42,7 +44,7 @@ public struct UserInfo
 
 public class UserInfoManager : Singleton<UserInfoManager>, IAwake
 {
-    public UserInfo userInfo;
+    public UserInfo_Current userInfo;
 
     public void __Awake()
     {

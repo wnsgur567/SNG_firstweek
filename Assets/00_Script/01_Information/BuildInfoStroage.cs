@@ -35,19 +35,30 @@ public struct BuildInformation
 }
 public class BuildInfoStroage: Singleton<BuildInfoStroage>,IAwake
 {
+    _JsonInfoLoader _loader = null;
+
     // 각 타입 별 기본 정보값들을 셋팅
     public Dictionary<E_BuildingType, BuildInformation> storage;
 
     public void __Awake()
     {
+        _loader = _JsonInfoLoader.Instance;
+
         storage = new Dictionary<E_BuildingType, BuildInformation>();
 
-        for (int i = 0; i < (int)E_BuildingType.Max; i++)
+        // json에서 읽은 파일로 셋팅
+        foreach (var item in _loader.m_buildInfomation)
         {
-            storage[(E_BuildingType)i] = new BuildInformation();
-            storage[(E_BuildingType)i].Clear();
+            storage[item.type] = item;
+        } 
 
-            storage[(E_BuildingType)i].__Init(((E_BuildingType)i).ToString() ,(E_BuildingType)i, 1, 1, 10, 10);    // 임시
-        }
+        // 임시 셋팅시
+        //for (int i = 0; i < (int)E_BuildingType.Max; i++)
+        //{
+        //    storage[(E_BuildingType)i] = new BuildInformation();
+        //    storage[(E_BuildingType)i].Clear();
+
+        //    storage[(E_BuildingType)i].__Init(((E_BuildingType)i).ToString() ,(E_BuildingType)i, 1, 1, 10, 10);    // 임시
+        //}
     }
 }
