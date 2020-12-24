@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class MyRayReciever : MonoBehaviour
 {
-    public bool On;   
+    public bool On;
+    MeshRenderer m_renderer = null;
+    Material m_material = null;
 
     private void Awake()
-    {
-        On = false;        
-    }
+    {        
+        m_renderer = GetComponent<MeshRenderer>();
+        m_material = m_renderer.material;
+        UnShow();
+    }    
 
     private enum E_ColliderType
     {
@@ -27,8 +31,30 @@ public class MyRayReciever : MonoBehaviour
         public float radius;
         public float height;
     }
-
     
+    // 머터리얼 셋팅
+
+    public void Show()
+    {
+        if (On == false)
+            return;
+        
+        Color _color = m_material.color;
+        _color.a = 0.3f;
+        m_material.color = _color;
+    }
+    public void UnShow()
+    {
+        if (On == false)
+            return;
+
+        Color _color = m_material.color;
+        _color.a = 0;
+        m_material.color = _color;
+    }
+
+    // 콜라이더 셋팅
+
     public bool IsTrigger;
 
     [ContextMenuItem("UpdateCollider", "UpdateColliderComponent")]

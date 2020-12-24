@@ -43,34 +43,37 @@ public class MyRaycaster : MonoBehaviour
         if (isMulti)
             UpdateHitObjects();
         else
-            UpdateHitObject();
-
-        
+            UpdateHitObject();        
     }
 
     private RaycastHit hit;
     private void UpdateHitObject()
     {
+        UnshowReceiver(hitObject);
+        hitObject = null;
         Ray _ray = MakeRay();
         if (Physics.Raycast(_ray, out hit))
         {
             hitObject = hit.transform.gameObject;
-        }
-        else
-        {
-            hitObject = null;
-        }
+            ShowReceiver(hitObject);
+        }        
     }
 
     private void UpdateHitObjects()
     {
         Ray _ray = MakeRay();
         var hits = Physics.RaycastAll(_ray);
+
+        foreach (var item in hitObjects)
+        {
+            UnshowReceiver(item.hitCollider.gameObject);
+        }
         hitObjects.Clear();
         foreach (var item in hits)
         {
             // 거리의 순서와 상관없이 저장됨
             hitObjects.Add(new HitObjectInformation(item.transform.name, item.distance, item.collider));
+            ShowReceiver(item.collider.gameObject);            
             //Debug.LogFormat("{0} : {1}", item.transform.name, item.distance);
         }
     }
@@ -101,4 +104,28 @@ public class MyRaycaster : MonoBehaviour
         return ret;
     }
     
+    private void ShowReceiver(GameObject p_Receiver_obj)
+    {
+        if (p_Receiver_obj == null)
+            return;
+
+        var _receiver = p_Receiver_obj.GetComponent<MyRayReciever>();
+        if (_receiver != null)
+        {
+            _receiver.Show();
+        }
+    }
+
+    private void UnshowReceiver(GameObject p_Receiver_obj)
+    {
+        if (p_Receiver_obj == null)
+            return;
+
+        var _receiver = p_Receiver_obj.GetComponent<MyRayReciever>();
+        if (_receiver != null)
+        {
+            _receiver.UnShow();
+        }
+    }
+
 }
